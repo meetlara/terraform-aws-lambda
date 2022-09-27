@@ -253,7 +253,7 @@ data "aws_iam_policy_document" "async" {
       "lambda:InvokeFunction",
     ]
 
-    resources = compact(distinct([var.destination_on_failure, var.destination_on_success, var.custom_event_bus_arn]))
+    resources = compact(distinct([var.destination_on_failure, var.destination_on_success]))
   }
 }
 
