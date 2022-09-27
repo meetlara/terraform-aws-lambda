@@ -249,6 +249,7 @@ data "aws_iam_policy_document" "async" {
     actions = [
       "sns:Publish",
       "sqs:SendMessage",
+      "events:PutEvents",
       "lambda:InvokeFunction",
     ]
 
@@ -394,39 +395,4 @@ resource "aws_iam_role_policy_attachment" "additional_inline" {
 
   role       = aws_iam_role.lambda[0].name
   policy_arn = aws_iam_policy.additional_inline[0].arn
-}
-
-###############################
-# Role for putEvents
-###############################
-
-data "aws_iam_policy_document" "putEvents" {
-  count = local.create_role && var.attach_putEvents_event_policy ? 1 : 0
-
-  statement {
-    effect = "Allow"
-
-    actions = [
-      "events:PutEvents",
-    ]
-
-    resources = compact(distinct([var.destination_on_failure, var.destination_on_success, var.event_bus_arn]))
-  }
-}
-
-
-resource "aws_iam_policy" "putEvents" {
-  count = local.create_role && var.attach_putEvents_event_policy ? 1 : 0
-
-  name   = "${local.role_name}-putEvents"
-  path   = var.policy_path
-  policy = data.aws_iam_policy_document.putEvents[0].json
-  tags   = var.tags
-}
-
-resource "aws_iam_role_policy_attachment" "putEvents" {
-  count = local.create_role && var.attach_putEvents_event_policy ? 1 : 0
-
-  role       = aws_iam_role.lambda[0].name
-  policy_arn = aws_iam_policy.putEvents[0].arn
 }

@@ -648,9 +648,3 @@ variable "recreate_missing_package" {
   type        = bool
   default     = true
 }
-
-variable "attach_putEvents_event_policy" {
-  description = "Whether to attach putEvents event policy or not"
-  type        = bool
-  default     = true
-}
