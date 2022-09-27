@@ -285,6 +285,12 @@ variable "destination_on_success" {
   default     = null
 }
 
+variable "custom_event_bus_arn" {
+  description = "Amazon Resource Name (ARN) of the custom event bus to publish messagesg"
+  type        = string
+  default     = null
+}
+
 ##########################
 # Provisioned Concurrency
 ##########################
